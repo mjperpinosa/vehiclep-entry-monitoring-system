@@ -1,8 +1,8 @@
 export const VEHICLE_STATUS = {
-  UNREGISTERED: 'Unregistered',
-  CARNAPPED: 'Carnapped',
-  TAMPERED: 'Tampered',
-  DUPLICATE: 'Duplicate',
-  CODING: 'Coding Violation',
-  CLEAR: 'Cleared'
+  UNREGISTERED: 'UNREGISTERED',
+  CARNAPPED: 'CARNAPPED',
+  TAMPERED: 'TAMPERED',
+  DUPLICATE: 'DUPLICATE',
+  CODING: 'CODING',
+  CLEAR: 'CLEARED'
 }

@@ -5,27 +5,24 @@ import { Layout, Menu, Icon } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 
 const Page = props => {
+  const { pathname } = props.history.location
   return (
     <Layout style={{minHeight: '100vh'}}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={broken => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
       >
         <div className="logo" />
-        <Menu theme="dark" mode="inline">
-          <Menu.Item key="1">
+        <Menu theme="dark" mode="inline" style={{minHeight: '100vh'}} defaultSelectedKeys={[pathname]}>
+          <Menu.Item key="/dashboard">
             <Icon type="user" />
-            <Link to="/dashboard"><span className="nav-text" style={{color: 'white'}}>Dashboard</span></Link>
+            <span className="nav-text">Dashboard</span>
+            <Link to="/dashboard" />
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="/captures">
             <Icon type="video-camera" />
-            <Link to="/captures"><span className="nav-text" style={{color: 'white'}}>Captures</span></Link>
+            <span className="nav-text">Entries</span>
+            <Link to="/captures" />
           </Menu.Item>
         </Menu>
       </Sider>

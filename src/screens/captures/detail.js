@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
 import { Card, Row, Col, Descriptions, Tag } from 'antd';
+import axios from 'axios';
 import { VEHICLE_STATUS } from '../../constants';
 
 const Detail = props  => {
   const { id } = useParams();
+  const selectedEntry = useStoreState(state => state.entries.selectedEntry);
+  const setSelectedEntry = useStoreActions(actions => actions.entries.setSelectedEntry);
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const response = await axios.get(`http://192.168.43.84:8000/api/vehicle/${id}`)
+      setSelectedEntry(response.data)      
+    }
+    fetchData();
+  }, [])
+
   const { Meta } = Card;
 
   return (
@@ -20,11 +33,11 @@ const Detail = props  => {
       </Col>
       <Col span={12}>
         <Descriptions title="Vehicle Info" layout="vertical" bordered>
-          <Descriptions.Item label="Status"><Tag color="red">{VEHICLE_STATUS.CODING}</Tag></Descriptions.Item>
-          <Descriptions.Item label="Plate Number">{id}</Descriptions.Item>
-          <Descriptions.Item label="Make">Toyota</Descriptions.Item>
-          <Descriptions.Item label="Model">Model 2019</Descriptions.Item>
-          <Descriptions.Item label="Color">Black</Descriptions.Item>
+          <Descriptions.Item label="Status"><Tag color="red">{selectedEntry.status}</Tag></Descriptions.Item>
+          <Descriptions.Item label="Plate Number">{selectedEntry.plate_number}</Descriptions.Item>
+          <Descriptions.Item label="Make">{selectedEntry.make}</Descriptions.Item>
+          <Descriptions.Item label="Model">{`${selectedEntry.model} ${selectedEntry.year}`}</Descriptions.Item>
+          <Descriptions.Item label="Color">{selectedEntry.color}</Descriptions.Item>
         </Descriptions>
       </Col>
     </Row>
