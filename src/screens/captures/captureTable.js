@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Table, Tag, Select } from 'antd';
+import { Table, Tag, Select, message } from 'antd';
 import { VEHICLE_STATUS } from '../../constants';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import axios from 'axios';
@@ -53,7 +53,7 @@ const columns = [
     key: 'owner.vehicle.model',
     render: (text, record) => (
       <span>{`${text} ${record.owner.vehicle.year}`}</span>
-    ) 
+    )
   },
   {
     title: 'Date captured',
@@ -75,15 +75,15 @@ const CaptureTable = props => {
   function onChange(value) {
     setFilter(value);
   }
-  
+
   function onBlur() {
     console.log('blur');
   }
-  
+
   function onFocus() {
     console.log('focus');
   }
-  
+
   function onSearch(val) {
     console.log('search:', val);
   }
@@ -93,7 +93,7 @@ const CaptureTable = props => {
       const url = filter === '' ? 'http://192.168.43.84:8000/api/entries/' : `http://192.168.43.84:8000/api/entries/?status=${filter}`;
       const response = await axios.get(url);
       setInitialEntries(response.data);
-    } 
+    }
     fetchData();
   }, [filter])
 
@@ -106,6 +106,7 @@ const CaptureTable = props => {
     ws.onmessage = (event) => {
       const item = JSON.parse(event.data);
       addEntry(item.data);
+      message.warning("Plate Number: " + item.data.owner.vehicle.plate_number + " | Status: " + item.data.owner.vehicle.status)
       console.log('item', item)
     }
 
@@ -132,6 +133,8 @@ const CaptureTable = props => {
         <Option value="">All</Option>
         <Option value="CLEARED">Clear</Option>
         <Option value="CARNAPPED">Carnap</Option>
+        <Option value="UNREGISTERED">Unregistered</Option>
+        <Option value="DUPLICATE">Duplicate</Option>
       </Select>
       <Table rowKey="id" columns={columns} dataSource={entries} />
     </div>
